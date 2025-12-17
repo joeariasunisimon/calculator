@@ -1,0 +1,37 @@
+.calculator {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.title {
+    text-align: center;
+    color: #1f2937;
+    margin: 0 0 24px 0;
+    font-size: 28px;
+}
+
+.errorMessage {
+    margin-top: 12px;
+    padding: 12px;
+    background: #fee2e2;
+    color: #991b1b;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 14px;
+}
+
+@media (max-width: 480px) {
+    .calculator {
+        max-width: 100%;
+        border-radius: 0;
+        min-height: 100vh;
+    }
+
+    .title {
+        font-size: 24px;
+    }
+}
