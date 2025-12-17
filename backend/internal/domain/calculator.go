@@ -1,5 +1,10 @@
 package domain
 
+import (
+	"errors"
+	"strings"
+)
+
 const (
 	OperationAdd        = "add"
 	OperationSubtract   = "subtract"
@@ -25,4 +30,42 @@ type CalculatorService interface {
 	SquareRoot(a float64) (float64, error)
 	Percentage(value, percent float64) float64
 	Execute(Calculation) (float64, error)
+}
+
+func (c *Calculation) Validate() error {
+	if strings.TrimSpace(c.Operation) == "" {
+		return errors.New("operation is required")
+	}
+
+	needsTwo := map[string]bool{
+		OperationAdd:        true,
+		OperationSubtract:   true,
+		OperationMultiply:   true,
+		OperationDivide:     true,
+		OperationPower:      true,
+		OperationPercentage: true,
+	}
+
+	needsOne := map[string]bool{
+		OperationSquareRoot: true,
+	}
+
+	switch {
+	case needsTwo[c.Operation]:
+		if c.Operand1 == nil || c.Operand2 == nil {
+			return errors.New("both operand1 and operand2 are required for this operation")
+		}
+
+	case needsOne[c.Operation]:
+		if c.Operand1 == nil {
+			return errors.New("operand1 is required for this operation")
+		}
+
+		c.Operand2 = new(float64)
+
+	default:
+		return errors.New("unsupported operation")
+	}
+
+	return nil
 }

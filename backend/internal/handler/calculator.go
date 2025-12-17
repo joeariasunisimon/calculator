@@ -26,7 +26,18 @@ func (h *CalculatorHandler) ProcessOperation(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	result, err := h.service.Execute(domain.Calculation{})
+	calculation := req.ToCalculation()
+
+	err := calculation.Validate()
+	if err != nil {
+		writeJSON(w, http.StatusBadRequest, types.CalculateResponse{
+			Error: err.Error(),
+		})
+
+		return
+	}
+
+	result, err := h.service.Execute(calculation)
 	if err != nil {
 		writeJSON(w, http.StatusUnprocessableEntity, types.CalculateResponse{
 			Error: err.Error(),
